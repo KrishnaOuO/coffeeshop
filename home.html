@@ -1,0 +1,33 @@
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首頁 - 暖心咖啡館</title>
+<style>
+body {
+margin: 0;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1600&q=60') center/cover no-repeat;
+cursor: pointer;
+font-family: Arial, sans-serif;
+}
+.home-title {
+font-size: 3rem;
+font-weight: bold;
+color: #ffffff;
+text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+</style>
+</head>
+<body onclick="enterSite()">
+<div class="home-title">暖心咖啡館</div>
+<script>
+function enterSite() {
+window.location.href = "index.html";
+}
+</script>
+</body>
+</html>

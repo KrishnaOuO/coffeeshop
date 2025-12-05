@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>暖心咖啡館</title>
+  <style>
+    :root{
+      --bg:#f6f4ef; --card:#ffffff; --accent:#6b4f4f; --muted:#7b6c6c;
+      --shadow: 0 8px 24px rgba(39,37,37,0.08);
+      --radius:16px;
+      --max-width:1100px;
+    }
+    *{box-sizing:border-box}
+    body{font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,var(--bg),#fff); color:#222}
+    .wrap{max-width:var(--max-width); margin:36px auto; padding:24px}
+
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#6b4f4f,#d3b8b8);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:var(--shadow)}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted)}
+
+    /* Card */
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+
+    /* Carousel layout */
+    .carousel-container{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    @media (max-width:900px){.carousel-container{grid-template-columns:1fr;}.side-panel{order:2}}
+
+    .carousel{position:relative;overflow:hidden;border-radius:12px}
+    .slides{display:flex;transition:transform 420ms cubic-bezier(.2,.9,.3,1);will-change:transform}
+    .slide{min-width:100%;user-select:none;position:relative}
+    .slide img{width:100%;height:420px;object-fit:cover;display:block}
+    .slide .overlay{position:absolute;left:18px;bottom:18px;background:rgba(0,0,0,0.45);color:#fff;padding:10px 14px;border-radius:10px}
+    .slide a{display:block;height:100%;width:100%;position:absolute;left:0;top:0}
+
+    /* arrows */
+    .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.9);border-radius:10px;padding:8px;cursor:pointer;border:none;box-shadow:0 6px 18px rgba(99,87,87,0.12)}
+    .arrow:active{transform:translateY(-50%) scale(.98)}
+    .arrow-left{left:12px}
+    .arrow-right{right:12px}
+
+    /* indicators */
+    .indicators{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:8px}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.65);cursor:pointer}
+    .dot.active{background:var(--accent)}
+
+    /* Side panel */
+    .side-panel{max-height:560px;overflow:auto}
+    .coffee-list{display:flex;flex-direction:column;gap:12px}
+    .coffee-item{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;cursor:pointer}
+    .coffee-item:hover{background:#fbf8f8}
+    .thumb{width:76px;height:76px;border-radius:8px;flex-shrink:0;object-fit:cover}
+    .meta{flex:1}
+    .meta .title{font-weight:600}
+    .meta .sub{color:var(--muted);font-size:13px}
+
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:60}
+    .modal{background:var(--card);border-radius:14px;max-width:900px;width:92%;box-shadow:0 20px 50px rgba(27,26,26,0.35);display:flex;gap:18px;overflow:hidden}
+    .modal-left{flex:1}
+    .modal-left img{width:100%;height:100%;object-fit:cover}
+    .modal-right{width:360px;padding:20px}
+    .price{font-size:20px;font-weight:700;color:var(--accent);margin-top:6px}
+    .tag{display:inline-block;background:#f2ecec;padding:6px 8px;border-radius:8px;font-size:13px;color:var(--muted)}
+    .close-btn{background:none;border:0;font-size:20px;cursor:pointer;color:var(--muted)}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--accent);color:white;text-decoration:none;border:0;cursor:pointer}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">咖</div>
+        <div>
+          <h1>暖心咖啡館</h1>
+          <p class="lead">手沖／義式／單品豆 — 怡然的好味道</p>
+        </div>
+      </div>
+      <nav class="muted">營業時間：周一–周日 08:00–20:00</nav>
+    </header>
+
+    <div class="carousel-container">
+      <div class="card carousel card-with-controls">
+        <div class="carousel" id="mainCarousel">
+          <div class="slides" id="slides"></div>
+          <button class="arrow arrow-left" id="prevBtn" aria-label="上一張">◀</button>
+          <button class="arrow arrow-right" id="nextBtn" aria-label="下一張">▶</button>
+          <div class="indicators" id="indicators"></div>
+        </div>
+      </div>
+
+      <aside class="side-panel card">
+        <h3 style="margin-top:0">本周熱銷</h3>
+        <div class="coffee-list" id="coffeeList"></div>
+        <footer>點選任一圖片或右側項目可以查看詳細介紹。</footer>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Modal (hidden by default) -->
+  <template id="modalTpl">
+    <div class="modal-backdrop" role="dialog" aria-modal="true">
+      <div class="modal">
+        <div class="modal-left"><img src="" alt=""></div>
+        <div class="modal-right">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <h2 class="m-title"></h2>
+              <div class="tag m-origin"></div>
+            </div>
+            <button class="close-btn" aria-label="關閉">✕</button>
+          </div>
+          <p class="muted m-desc"></p>
+          <div style="margin-top:12px">
+            <div class="price m-price"></div>
+            <div style="margin-top:12px"><a class="btn add-cart">加入購物車</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // 範例咖啡資料（可替換）
+    const coffees = [
+      {id:1,name:'哥斯大黎加單品',origin:'Costa Rica',price:'NT$220',img:'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=60',desc:'淺焙細緻，蜜桃、花香與明亮的酸甜平衡，適合手沖。'},
+      {id:2,name:'哥倫比亞甜柔',origin:'Colombia',price:'NT$200',img:'https://first-cafe.com/wp-content/uploads/2022/04/%E4%B8%8B%E8%BC%89.jpg',desc:'中淺焙、口感均衡，帶焦糖與杏仁的餘韻，適合日常飲用。'},
+      {id:3,name:'藝伎莊園',origin:'Ethiopia',price:'NT$240',img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=60',desc:'淺焙，果香突出，莓果與花香強烈，為單品首選。'},
+      {id:4,name:'深焙義式配方',origin:'House Blend',price:'NT$180',img:'https://hk.marinabaysands.com/guides/singapore-foodie-guide/best-coffee-cafes-singapore/_jcr_content/root/container/table_copy/1-3/image_copy.coreimg.jpeg/1730792626437/latte.jpeg',desc:'深焙、濃郁巧克力與煙燻感，為拿鐵與美式的好伴侶。'}
+    ];
+
+    // 建立輪播項目與側欄清單
+    const slidesEl = document.getElementById('slides');
+    const indicatorsEl = document.getElementById('indicators');
+    const listEl = document.getElementById('coffeeList');
+
+    coffees.forEach((c, idx)=>{
+      // slide
+      const slide = document.createElement('div'); slide.className='slide';
+      slide.innerHTML = `
+        <img loading="lazy" src="${c.img}" alt="${c.name}">
+        <div class="overlay"><strong>${c.name}</strong><div style=\"font-size:13px;color:#eee\">${c.origin} · ${c.price}</div></div>
+        <a href="#" data-id="${c.id}" aria-label="查看 ${c.name}"></a>
+      `;
+      slidesEl.appendChild(slide);
+
+      // indicator
+      const dot = document.createElement('div'); dot.className='dot'; dot.dataset.index = idx; indicatorsEl.appendChild(dot);
+
+      // side list
+      const item = document.createElement('div'); item.className='coffee-item'; item.tabIndex=0; item.dataset.id=c.id;
+      item.innerHTML = `<img class="thumb" src="${c.img}" alt="${c.name}"><div class=\"meta\"><div class=\"title\">${c.name}</div><div class=\"sub\">${c.origin} · ${c.price}</div></div>`;
+      listEl.appendChild(item);
+    });
+
+    // carousel logic
+    let current = 0; const total = coffees.length; const slideWidth = () => slidesEl.clientWidth;
+    function goTo(i, animate=true){
+      current = (i+total)%total;
+      slidesEl.style.transition = animate? 'transform 420ms cubic-bezier(.2,.9,.3,1)': 'none';
+      slidesEl.style.transform = `translateX(${-current*100}%)`;
+      // indicators
+      indicatorsEl.querySelectorAll('.dot').forEach((d,idx)=> d.classList.toggle('active', idx===current));
+    }
+    goTo(0,false);
+
+    document.getElementById('prevBtn').addEventListener('click', ()=> goTo(current-1));
+    document.getElementById('nextBtn').addEventListener('click', ()=> goTo(current+1));
+
+    // click on slide to open modal
+    slidesEl.addEventListener('click', (e)=>{
+      const a = e.target.closest('a[data-id]'); if(!a) return; e.preventDefault(); openDetail(Number(a.dataset.id));
+    });
+    // click on list
+    listEl.addEventListener('click', (e)=>{ const it = e.target.closest('[data-id]'); if(!it) return; openDetail(Number(it.dataset.id)); });
+    listEl.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ const it = e.target.closest('[data-id]'); if(it) openDetail(Number(it.dataset.id)); }});
+
+    // indicators click
+    indicatorsEl.addEventListener('click',(e)=>{ const d = e.target.closest('.dot'); if(!d) return; goTo(Number(d.dataset.index)); });
+
+    // autoplay
+    let autoplay = setInterval(()=> goTo(current+1), 4500);
+    const carousel = document.getElementById('mainCarousel');
+    carousel.addEventListener('mouseenter', ()=> clearInterval(autoplay));
+    carousel.addEventListener('mouseleave', ()=> autoplay = setInterval(()=> goTo(current+1), 4500));
+
+    // responsive: resize handler to keep 100% slides
+    window.addEventListener('resize', ()=> goTo(current,false));
+
+    // detail modal
+    function openDetail(id){
+      const c = coffees.find(x=> x.id===id); if(!c) return;
+      const tpl = document.getElementById('modalTpl');
+      const node = tpl.content.cloneNode(true);
+      node.querySelector('.modal-left img').src = c.img; node.querySelector('.modal-left img').alt = c.name;
+      node.querySelector('.m-title').textContent = c.name;
+      node.querySelector('.m-origin').textContent = c.origin;
+      node.querySelector('.m-desc').textContent = c.desc;
+      node.querySelector('.m-price').textContent = c.price;
+      node.querySelector('.close-btn').addEventListener('click', ()=> closeModal(node));
+      node.querySelector('.modal-backdrop').addEventListener('click', (ev)=>{ if(ev.target.classList.contains('modal-backdrop')) closeModal(node); });
+      document.body.appendChild(node);
+    }
+    function closeModal(nodeFragment){
+      // find backdrop and remove
+      const backdrop = document.querySelector('.modal-backdrop'); if(backdrop) backdrop.remove();
+    }
+
+    // keyboard navigation
+    document.addEventListener('keydown',(e)=>{
+      if(e.key==='ArrowLeft') goTo(current-1);
+      if(e.key==='ArrowRight') goTo(current+1);
+      if(e.key==='Escape') closeModal();
+    });
+
+    // set first dot active
+    indicatorsEl.querySelectorAll('.dot')[0].classList.add('active');
+
+  </script>
+</body>
+</html>
