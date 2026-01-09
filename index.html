@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>暖心咖啡館 - 點餐系統</title>
+  <title>暖心咖啡館</title>
   <style>
     :root{
       --bg:#f6f4ef; --card:#ffffff; --accent:#6b4f4f; --muted:#7b6c6c; --success:#2d5a27;
@@ -20,41 +20,37 @@
     .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#6b4f4f,#d3b8b8);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:var(--shadow)}
     
     .cart-trigger { position: relative; cursor: pointer; padding: 10px; background: white; border-radius: 50%; box-shadow: var(--shadow); border: none; font-size: 22px; transition: 0.2s; }
-    .cart-trigger:hover { transform: scale(1.1); }
     .cart-count { position: absolute; top: -2px; right: -2px; background: #e74c3c; color: white; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
     .carousel-container{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
     @media (max-width:900px){.carousel-container{grid-template-columns:1fr;}}
 
     .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-
     .carousel-box{position:relative;overflow:hidden;border-radius:12px;background:#eee}
     .slides{display:flex;transition:transform 450ms cubic-bezier(.2,.9,.3,1)}
     .slide{min-width:100%;position:relative}
-    .slide img{width:100%;height:450px;object-fit:cover;display:block}
-    .slide .overlay{position:absolute;left:20px;bottom:20px;background:rgba(0,0,0,0.6);color:#fff;padding:12px 18px;border-radius:12px;backdrop-filter:blur(4px)}
+    .slide img{width:100%;height:420px;object-fit:cover;display:block}
+    .slide .overlay{position:absolute;left:18px;bottom:18px;background:rgba(0,0,0,0.55);color:#fff;padding:12px;border-radius:12px;backdrop-filter:blur(4px)}
 
     .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
-    .arrow-left{left:15px} .arrow-right{right:15px}
+    .arrow-left{left:12px} .arrow-right{right:12px}
 
     .coffee-item{display:flex;gap:15px;align-items:center;padding:12px;border-radius:12px;cursor:pointer;transition:0.2s}
-    .coffee-item:hover{background:#fdfaf5; transform:translateX(8px)}
+    .coffee-item:hover{background:#fdfaf5; transform:translateX(5px)}
     .thumb{width:64px;height:64px;border-radius:10px;object-fit:cover}
 
     .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
-    .modal{background:white;border-radius:20px;max-width:800px;width:92%;display:flex;overflow:hidden;animation:pop 0.3s ease-out}
-    @keyframes pop { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
+    .modal{background:white;border-radius:20px;max-width:850px;width:92%;display:flex;overflow:hidden;animation:pop 0.3s ease-out}
+    @keyframes pop { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
     
-    #cartDrawer { position: fixed; right: -360px; top: 0; width: 350px; height: 100%; background: white; z-index: 200; box-shadow: -10px 0 30px rgba(0,0,0,0.1); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 24px; display: flex; flex-direction: column; }
+    #cartDrawer { position: fixed; right: -360px; top: 0; width: 350px; height: 100%; background: white; z-index: 200; box-shadow: -10px 0 30px rgba(0,0,0,0.1); transition: 0.3s; padding: 24px; display: flex; flex-direction: column; }
     #cartDrawer.open { right: 0; }
     
     .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f0f0f0; }
-
     input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-top: 5px; font-size: 14px; }
-    input:focus { outline: none; border-color: var(--accent); }
 
-    .btn{display:block;width:100%;padding:14px;border-radius:12px;background:var(--accent);color:white;text-align:center;cursor:pointer;border:none;font-weight:600;font-size:16px;transition:0.2s}
-    .btn:hover{filter: brightness(1.1); transform:translateY(-1px)}
+    .btn{display:block;width:100%;padding:14px;border-radius:12px;background:var(--accent);color:white;text-align:center;cursor:pointer;border:none;font-weight:600;transition:0.2s}
+    .btn:hover{filter: brightness(1.1);}
     .btn-secondary{background:#eee; color:#444; margin-top:10px}
     .close-btn{background:none;border:0;font-size:24px;cursor:pointer;color:var(--muted)}
   </style>
@@ -66,8 +62,8 @@
       <div class="brand">
         <div class="logo">咖</div>
         <div>
-          <h1 style="margin:0;font-size:22px">暖心咖啡館</h1>
-          <p style="margin:0;color:var(--muted);font-size:14px">一杯咖啡，一份純粹的溫暖</p>
+          <h1 style="margin:0">暖心咖啡館</h1>
+          <p style="margin:0;color:var(--muted);font-size:14px">手沖／義式／單品豆 — 怡然的好味道</p>
         </div>
       </div>
       <button class="cart-trigger" id="openCart">
@@ -76,7 +72,7 @@
     </header>
 
     <div class="carousel-container">
-      <div class="card" style="padding:0;">
+      <div class="card" style="padding:0; overflow:hidden">
         <div class="carousel-box">
           <div class="slides" id="slides"></div>
           <button class="arrow arrow-left" id="prevBtn">❮</button>
@@ -85,7 +81,7 @@
       </div>
 
       <aside class="side-panel card">
-        <h3 style="margin-top:0; border-bottom:1px solid #eee; padding-bottom:10px">本周推薦</h3>
+        <h3 style="margin-top:0">本周熱銷</h3>
         <div class="coffee-list" id="coffeeList"></div>
       </aside>
     </div>
@@ -93,46 +89,28 @@
 
   <div id="cartDrawer">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <h3 id="cartTitle">我的購物車</h3>
+      <h3 id="cartTitle">購物清單</h3>
       <button class="close-btn" onclick="toggleCart(false)">✕</button>
     </div>
 
     <div id="cartStep1" style="display:flex; flex-direction:column; height:100%">
       <div id="cartItems" style="flex:1; overflow:auto"></div>
       <div style="padding-top:20px; border-top:2px solid #f6f4ef">
-        <div style="display:flex;justify-content:space-between;font-size:20px;font-weight:700;margin-bottom:15px">
-          <span>總計金額</span>
-          <span id="cartTotal" style="color:var(--accent)">NT$0</span>
+        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-bottom:15px">
+          <span>總計</span>
+          <span id="cartTotal">NT$0</span>
         </div>
-        <button class="btn" onclick="showStep(2)">前往結帳</button>
+        <button class="btn" onclick="showStep(2)">填寫結帳資料</button>
       </div>
     </div>
 
     <div id="cartStep2" style="display:none; flex-direction:column">
       <form id="checkoutForm">
-        <div style="margin-bottom:15px">
-          <label>姓名</label>
-          <input type="text" id="custName" required placeholder="請輸入收件人姓名">
-        </div>
-        <div style="margin-bottom:15px">
-          <label>電話</label>
-          <input type="tel" id="custPhone" required placeholder="請輸入聯絡電話">
-        </div>
-        <div style="margin-bottom:15px">
-          <label>取餐方式</label>
-          <select id="deliveryType">
-            <option>內用 (請填寫桌號)</option>
-            <option>外帶</option>
-            <option>外送 (請填寫地址)</option>
-          </select>
-        </div>
-        <div style="margin-bottom:20px">
-          <label>備註內容</label>
-          <input type="text" id="custAddr" placeholder="桌號、地址或特殊需求">
-        </div>
-        
-        <button type="submit" class="btn" style="background:var(--success)">確認並送出訂單</button>
-        <button type="button" class="btn btn-secondary" onclick="showStep(1)">返回修改清單</button>
+        <div style="margin-bottom:15px"><label>姓名</label><input type="text" id="custName" required></div>
+        <div style="margin-bottom:15px"><label>電話</label><input type="tel" id="custPhone" required></div>
+        <div style="margin-bottom:20px"><label>備註 (桌號或地址)</label><input type="text" id="custNote"></div>
+        <button type="submit" class="btn" style="background:var(--success)">確認送出訂單</button>
+        <button type="button" class="btn btn-secondary" onclick="showStep(1)">返回清單</button>
       </form>
     </div>
   </div>
@@ -140,14 +118,14 @@
   <template id="modalTpl">
     <div class="modal-backdrop">
       <div class="modal">
-        <div style="flex:1; background:#f9f9f9"><img class="m-img" style="width:100%;height:100%;object-fit:cover"></div>
-        <div style="width:340px; padding:30px; display:flex; flex-direction:column">
+        <div style="flex:1"><img class="m-img" style="width:100%;height:100%;object-fit:cover"></div>
+        <div style="width:320px; padding:25px; display:flex; flex-direction:column">
           <div style="display:flex;justify-content:space-between">
-            <h2 class="m-title" style="margin:0;color:var(--accent)"></h2>
+            <h2 class="m-title" style="margin:0"></h2>
             <button class="close-btn" onclick="closeModal()">✕</button>
           </div>
-          <p class="m-desc" style="color:var(--muted); line-height:1.6; flex:1; margin-top:15px"></p>
-          <div class="m-price" style="font-size:28px; font-weight:700; margin-bottom:20px"></div>
+          <p class="m-desc" style="color:var(--muted); font-size:14px; line-height:1.6; flex:1; margin-top:15px"></p>
+          <div class="m-price" style="font-size:24px; font-weight:700; margin-bottom:15px; color:var(--accent)"></div>
           <button class="btn add-cart-btn">加入購物車</button>
         </div>
       </div>
@@ -156,10 +134,10 @@
 
   <script>
     const coffees = [
-      {id:1,name:'哥斯大黎加 蜜處理',price:220,img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600',desc:'帶有明亮的葡萄柚與蜂蜜甜感，酸度適中，香氣悠長。'},
-      {id:2,name:'哥倫比亞 琥珀',price:200,img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',desc:'經典堅果與巧克力風味，口感厚實溫潤，是午後的最佳夥伴。'},
-      {id:3,name:'衣索比亞 耶加雪菲',price:240,img:'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600',desc:'充滿迷人的茉莉花香與檸檬清香，極致乾淨的淺焙體驗。'},
-      {id:4,name:'暖心配方豆 (深焙)',price:180,img:'https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=600',desc:'專為拿鐵設計，濃醇焦糖與煙燻香氣，完美結合鮮乳。'}
+      {id:1,name:'哥斯大黎加單品',origin:'Costa Rica',price:'NT$220',img:'https://cdn.shopify.com/s/files/1/0642/4336/8160/files/IMG_8276_edited_480x480.jpg?v=1652083181',desc:'淺焙細緻，蜜桃、花香與明亮的酸甜平衡，適合手沖。'},
+      {id:2,name:'哥倫比亞甜柔',origin:'Colombia',price:'NT$200',img:'https://first-cafe.com/wp-content/uploads/2022/04/%E4%B8%8B%E8%BC%89.jpg',desc:'中淺焙、口感均衡，帶焦糖與杏仁的餘韻，適合日常飲用。'},
+      {id:3,name:'藝伎莊園',origin:'Ethiopia',price:'NT$240',img:'https://cdn-next.cybassets.com/s/files/31348/ckeditor/pictures/4d8664c4-9f81-4872-8700-f360053aae88.jpg',desc:'淺焙，果香突出，莓果與花香強烈，為單品首選。'},
+      {id:4,name:'深焙義式配方',origin:'House Blend',price:'NT$180',img:'https://hk.marinabaysands.com/guides/singapore-foodie-guide/best-coffee-cafes-singapore/_jcr_content/root/container/table_copy/1-3/image_copy.coreimg.jpeg/1730792626437/latte.jpeg',desc:'深焙、濃郁巧克力與煙燻感，為拿鐵與美式的好伴侶。'}
     ];
 
     let cart = JSON.parse(localStorage.getItem('coffee_cart')) || [];
@@ -168,11 +146,11 @@
 
     coffees.forEach((c, idx)=>{
       const slide = document.createElement('div'); slide.className='slide';
-      slide.innerHTML = `<img src="${c.img}"><div class="overlay"><strong>${c.name}</strong><br>NT$${c.price}</div><a href="#" style="position:absolute;inset:0" onclick="openDetail(${c.id});return false"></a>`;
+      slide.innerHTML = `<img src="${c.img}"><div class="overlay"><strong>${c.name}</strong><br>${c.price}</div><a href="#" style="position:absolute;inset:0" onclick="openDetail(${c.id});return false"></a>`;
       slidesEl.appendChild(slide);
 
       const item = document.createElement('div'); item.className='coffee-item'; item.onclick=()=>openDetail(c.id);
-      item.innerHTML = `<img class="thumb" src="${c.img}"><div><div style="font-weight:600">${c.name}</div><div style="color:var(--muted);font-size:13px">NT$${c.price}</div></div>`;
+      item.innerHTML = `<img class="thumb" src="${c.img}"><div><div style="font-weight:600">${c.name}</div><div style="color:var(--muted);font-size:12px">${c.origin} · ${c.price}</div></div>`;
       listEl.appendChild(item);
     });
 
@@ -195,18 +173,30 @@
       if(step === 2 && cart.length === 0) return alert("購物車目前沒有商品喔！");
       document.getElementById('cartStep1').style.display = step === 1 ? 'flex' : 'none';
       document.getElementById('cartStep2').style.display = step === 2 ? 'flex' : 'none';
-      document.getElementById('cartTitle').textContent = step === 1 ? '我的購物車' : '結帳資料';
+      document.getElementById('cartTitle').textContent = step === 1 ? '購物清單' : '填寫資料';
     }
 
     function addToCart(id) {
       const item = coffees.find(c => c.id === id);
       cart.push(item);
       saveAndUpdate();
-      
       const btn = document.querySelector('.add-cart-btn');
       btn.textContent = "✓ 已加入";
-      btn.style.background = "#2d5a27";
       setTimeout(closeModal, 600);
+    }
+
+    function saveAndUpdate() {
+      localStorage.setItem('coffee_cart', JSON.stringify(cart));
+      document.getElementById('cartItems').innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+          <div><b>${item.name}</b><br><small>${item.price}</small></div>
+          <button style="border:none;background:none;color:#e74c3c;cursor:pointer" onclick="removeFromCart(${idx})">移除</button>
+        </div>
+      `).join('');
+      document.getElementById('cartCount').textContent = cart.length;
+      
+      const total = cart.reduce((sum, i) => sum + parseInt(i.price.replace('NT$', '')), 0);
+      document.getElementById('cartTotal').textContent = `NT$${total}`;
     }
 
     function removeFromCart(index) {
@@ -214,34 +204,17 @@
       saveAndUpdate();
     }
 
-    function saveAndUpdate() {
-      localStorage.setItem('coffee_cart', JSON.stringify(cart));
-      const itemsEl = document.getElementById('cartItems');
-      itemsEl.innerHTML = cart.map((item, idx) => `
-        <div class="cart-item">
-          <div><b>${item.name}</b><br><small>NT$${item.price}</small></div>
-          <button style="border:none;background:none;color:#e74c3c;cursor:pointer" onclick="removeFromCart(${idx})">移除</button>
-        </div>
-      `).join('');
-      
-      document.getElementById('cartCount').textContent = cart.length;
-      const total = cart.reduce((sum, i) => sum + i.price, 0);
-      document.getElementById('cartTotal').textContent = `NT$${total}`;
-    }
-
     function openDetail(id){
       const c = coffees.find(x=> x.id===id);
       const tpl = document.getElementById('modalTpl');
       const node = tpl.content.cloneNode(true);
       const b = node.querySelector('.modal-backdrop');
-
       b.querySelector('.m-img').src = c.img;
       b.querySelector('.m-title').textContent = c.name;
       b.querySelector('.m-desc').textContent = c.desc;
-      b.querySelector('.m-price').textContent = `NT$${c.price}`;
+      b.querySelector('.m-price').textContent = c.price;
       b.querySelector('.add-cart-btn').onclick = () => addToCart(c.id);
       b.onclick = (e) => { if(e.target === b) closeModal(); };
-
       document.body.appendChild(node);
       document.body.style.overflow = 'hidden';
     }
@@ -254,8 +227,7 @@
 
     document.getElementById('checkoutForm').onsubmit = (e) => {
       e.preventDefault();
-      const name = document.getElementById('custName').value;
-      alert(`🎉 謝謝您，${name}！您的訂單已送出。\n我們將盡快為您準備咖啡。`);
+      alert(`🎉 謝謝您，${document.getElementById('custName').value}！\n訂單已送出，請靜候咖啡。`);
       cart = [];
       saveAndUpdate();
       toggleCart(false);
